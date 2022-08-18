@@ -1,0 +1,58 @@
+---
+title: "Making Tables"
+author: "Hailey Veirs"
+format: html
+editor: visual
+---
+
+```{r}
+library(lterdatasampler)
+library(tidyverse)
+library(kableExtra)
+```
+
+## Creating tables using lterdatasampler data sets
+
+### Use hbr_maples data set
+Make a comparison, create a summary table first
+
+```{r}
+maple_height_ws_yr <- hbr_maples |>
+  group_by(watershed, year) |>
+  summarize(mean_seedling_h_cm2 = 
+              round(mean(stem_length, na.rm = TRUE), 1), 
+            sd_seedling_h = 
+              round(sd(stem_length, na.rm = TRUE), 3))
+
+# ^^ "round" accepts an object (or function) and you state how many decimal points you want to keep/round to
+```
+
+Make a nicer, user friendly table with the subset!
+
+
+```{r}
+maple_height_ws_yr |> 
+  kable() |> 
+  kable_styling(bootstrap_options = "striped")
+
+maple_height_ws_yr |> 
+  kable(col.names = c("Watershed", "Year", 
+                      "Mean Seedling Height (cm^2)", 
+                      "Standard Deviation (cm^2)")) |> 
+  kable_classic(bootstrap_options = "striped")
+
+# Change title names in the viz, not the actual data
+maple_height_ws_yr |> 
+  kable(col.names = c("Watershed", "Year", 
+                      "Mean Seedling Height (cm^2)", 
+                      "Standard Deviation (cm^2)")) |> 
+  kable_styling(bootstrap_options = "striped") |> 
+  column_spec(column = 1, bold = TRUE, 
+              background = "orange") |>
+  add_header_above(header = 
+                     c(" " = 2, 
+                       "Seedling dimensions" = 2)) |> 
+  scroll_box(height = "500px", width = "1000px")
+```
+
+
