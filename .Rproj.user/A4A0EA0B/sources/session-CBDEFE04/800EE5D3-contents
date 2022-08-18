@@ -1,0 +1,5 @@
+# --- Practice Reprexes
+
+# making a git repo thru terminal
+# 1. navigate to the project you want to make a repo
+# "git init"
